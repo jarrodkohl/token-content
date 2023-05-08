@@ -1,7 +1,11 @@
+import { faBrain } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+
 export const Logo = () => {
   return (
-    <div>
-      <h1>This is the Logo component</h1>
+    <div className="text-3xl text-center py-4 font-heading">
+      AgentAi
+      <FontAwesomeIcon icon={faBrain} className="text-2xl text-slate-100" />
     </div>
   )
 }
