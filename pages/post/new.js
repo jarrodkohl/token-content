@@ -55,7 +55,7 @@ export default function NewPost(props) {
       </form>
       <p>Topic: {topic} </p>
       <p>Keywords: {keywords} </p>
-      <p>Post Content: {postContent} </p>
+      <p className="callout">Post Content: {postContent} </p>
     </div>
   )
 }
