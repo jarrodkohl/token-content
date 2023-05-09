@@ -32,6 +32,62 @@ export default async function handler(req, res) {
   ]
   })
 
-  console.log("response", postContentResponse.data.choices[0]?.message?.content);
-  res.status(200).json({ post: postContentResponse.data.choices[0]?.message?.content })
+  const postContent = postContentResponse.data.choices[0]?.message?.content || ''
+
+  const titleResponse = await openai.createChatCompletion({
+    model: "gpt-3.5-turbo",
+    temperature: 0,
+    messages: [{
+      role: "system",
+      content: "you are a blog post generator",
+    },{
+      role: "user",
+      content: `write a long and detailed SEO friendly blog post about ${topic} that targets the following comma separted keywords: ${keywords}
+      the content should be formatted in SEO-friendly HTML, 
+      and should be limited to the following HTML tags: p, H1, H2, h3, h4, h5, h6, ul, ol, li, i.`
+    },
+    {
+      role: "assistant",
+      content: postContent,
+    },
+    {
+      role: "user",
+      content: "generate a seo friendly title of the above blog",
+    }
+  ]
+  })
+  const metaDescriptionResponse = await openai.createChatCompletion({
+    model: "gpt-3.5-turbo",
+    temperature: 0,
+    messages: [{
+      role: "system",
+      content: "you are a blog post generator",
+    },{
+      role: "user",
+      content: `write a long and detailed SEO friendly blog post about ${topic} that targets the following comma separted keywords: ${keywords}
+      the content should be formatted in SEO-friendly HTML, 
+      and should be limited to the following HTML tags: p, H1, H2, h3, h4, h5, h6, ul, ol, li, i.`
+    },
+    {
+      role: "assistant",
+      content: postContent,
+    },
+    {
+      role: "user",
+      content: "generate SEO friendly meta description content for above blog",
+    }
+  ]
+  })
+
+  const title = titleResponse.data.choices[0]?.message?.content || ''
+  const metaDescription = metaDescriptionResponse.data.choices[0]?.message?.content || ''
+
+  console.log("post content::::::", postContent);
+  console.log("title::::", title);
+  console.log("meta description:::::", metaDescription);
+  res.status(200).json({ 
+    post: postContent,
+    title: title,
+    metaDescription: metaDescription,
+  })
 }
