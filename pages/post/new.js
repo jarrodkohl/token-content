@@ -3,7 +3,6 @@ import { AppLayout } from "../../components/AppLayout";
 import { useState } from "react";
 
 export default function NewPost(props) {
-  console.log("props", props);
   const [topic, setTopic] = useState("")
   const [keywords, setKeywords] = useState("")
   const [postContent, setPostContent] = useState("")
@@ -17,9 +16,7 @@ export default function NewPost(props) {
       body: JSON.stringify({ topic, keywords })
     })
     const data = await response.json()
-    console.log("data", data.post.postContent);
     setPostContent(data.post)
-    console.log("postContent", postContent);
   }
   return (
     <div>
