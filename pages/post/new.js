@@ -1,8 +1,10 @@
 import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 import { AppLayout } from "../../components/AppLayout";
 import { useState } from "react";
+import { useRouter } from "next/router";
 
 export default function NewPost(props) {
+  const router = useRouter()
   const [topic, setTopic] = useState("")
   const [keywords, setKeywords] = useState("")
   const [postContent, setPostContent] = useState("")
@@ -17,7 +19,11 @@ export default function NewPost(props) {
     })
     const data = await response.json()
     setPostContent(data.post)
+    if(data?.postId) {
+      router.push(`/post/${data.postId}`)
+    }
   }
+  
   return (
     <div>
       <form onSubmit={handleSubmit}>
