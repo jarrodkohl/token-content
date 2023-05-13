@@ -98,9 +98,6 @@ export default withApiAuthRequired(async function handler(req, res) {
   const title = titleResponse.data.choices[0]?.message?.content || ''
   const metaDescription = metaDescriptionResponse.data.choices[0]?.message?.content || ''
 
-  console.log("post content::::::", postContent);
-  console.log("title::::", title);
-  console.log("meta description:::::", metaDescription);
   
   await db.collection("users").updateOne({
     auth0Id: user.sub
@@ -119,11 +116,13 @@ export default withApiAuthRequired(async function handler(req, res) {
     userId: userProfile._id,
     createdAt: new Date(),
   })
+  console.log("post", post);
 
-
-  res.status(200).json({ 
-    post: postContent,
-    title: title,
-    metaDescription: metaDescription,
-  })
+res.status(200).json({ 
+  post: postContent,
+  title: title,
+  metaDescription: metaDescription,
+  postId: post.insertedId,
 })
+})
+

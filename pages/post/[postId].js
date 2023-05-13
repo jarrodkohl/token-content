@@ -5,9 +5,25 @@ import clientPromise from "../../lib/mongodb";
 
 export default function Post(props) {
   console.log(props)
+  console.log(props.postContent)
+  console.log('post id', props.postId)
+  
+  
+
+  
   return (
-    <div>
-      <h1>This is a post page</h1>
+    <div className="overflow-auto h-full">
+      <div className="max-w-screen-sm mx-auto">
+        <div className="text-sm font-bold mt-6 p-2 bg-slate-100 rounded-sm">
+          Your Post Content
+        </div>
+        <div className="p-2 bg-slate-100 rounded-sm">
+          {props.postContent}
+
+        </div>
+
+      </div>
+      
     </div>
   )
 }
@@ -24,27 +40,29 @@ export const getServerSideProps = withPageAuthRequired(async (context) => {
       auth0Id: userSession.user.sub,
     })
     const post = await db.collection("posts").findOne({
-      _id: ObjectId(context.params.postId),
+      _id: ObjectId(context.query.postId),
       userId: userProfile._id,  // should this be userId: user._id
     })
+    console.log('context', context.query)
+    console.log('post', post)
 
     if(!post) {
       return {
         redirect: {
           destination: "/post/new",
           permanent: false,
+        }
       }
     }
-  }
-  return {
-    props: {
-      postContent: post.postContent,
-      title: post.title,
-      keywords: post.keywords,
-      metaDescription: post.metaDescription,
+    
+
+    return {
+      props: {
+        postContent: post.postContent,
+        title: post.title,
+        keywords: post.keywords,
+        metaDescription: post.metaDescription,
+        postId: context.params.postId,
+      }
     }
-  }
-  }
 })
-
-
