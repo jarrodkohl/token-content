@@ -4,6 +4,7 @@ import { withPageAuthRequired } from '@auth0/nextjs-auth0'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 import { AppLayout } from '../../components/AppLayout'
+import { getAppProps } from '../../utils/getAppProps'
 
 export default function Post() {
   const router = useRouter()
@@ -35,8 +36,11 @@ Post.getLayout = function getLayout(page, pageProps) {
   return <AppLayout {...pageProps}>{page}</AppLayout>;
 };
 
-export const getServerSideProps = withPageAuthRequired (() => {
-  return {
-    props: {},
-  };
+export const getServerSideProps = withPageAuthRequired ({
+  async getServerSideProps(ctx) {
+    const props = await getAppProps(ctx);
+    return {
+      props,
+    };
+  }
 })
