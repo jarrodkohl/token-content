@@ -8,7 +8,7 @@ export default async function handler(req, res) {
   const { user } = await getSession(req, res)
 
   const lineItems = [{
-    price: process.env.STRIPE_PRICE_ID,
+    price: process.env.STRIPE_PRODUCT_PRICE_ID,
     quantity: 1
   }]
 
