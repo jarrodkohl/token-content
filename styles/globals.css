@@ -4,6 +4,9 @@
 
 @layer components {
   .btn {
-    @apply bg-green-500 tracking-wider w-full text-center text-white font-bold cursor-pointer uppercase px-4 py-2 rounded-md hover:bg-green-600 transition-colors block;
+    @apply disabled:bg-green-300 default:cursor-not-allowed hover:no-underline bg-green-500 tracking-wider w-full text-center text-white font-bold cursor-pointer uppercase px-4 py-2 rounded-md hover:bg-green-600 transition-colors block;
+  }
+  a:hover {
+    @apply underline
   }
 }

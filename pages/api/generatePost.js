@@ -23,8 +23,12 @@ export default withApiAuthRequired(async function handler(req, res) {
   const openai = new OpenAIApi(config)
 
   const { topic, keywords } = req.body
-  console.log("topic", topic);
-  console.log("keywords", keywords);
+  
+  if(!topic || !keywords) {
+    res.status(400).json({ error: "You must provide a topic and keywords" })
+    return
+  }
+
 
   // const topic = req.body.topic
   // const topic = "how to write a linkedin post"
