@@ -1,5 +1,5 @@
-import { getSession } from "./session";
-import clientPromise from "./mongodb";
+import { getSession } from "@auth0/nextjs-auth0";
+import clientPromise from "../lib/mongodb";
 
 export const getAppProps = async (ctx) => {
   const userSession = await getSession(ctx.req, ctx.res);
@@ -18,15 +18,19 @@ export const getAppProps = async (ctx) => {
 
   const posts = await db.collection("posts").find({
     userId: user._id
-  }).toArray()
+  }).sort({ 
+    createdAt: -1,
+   })
+  .toArray()
 
   return {
     availableTokens: user.availableTokens,
-    posts: posts.map(({ created, _id, userId, ...rest }) => ({
+    posts: posts.map(({ createdAt, _id, userId, ...rest }) => ({
       _id: _id.toString(),
-      created: created.toString(),
-      ...rest
-    }))
+      createdAt: createdAt.toString(),
+      ...rest,
+    })),
+    postId: ctx.params?.postId || null,
   }  
 }
 
